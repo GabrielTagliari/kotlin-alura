@@ -18,6 +18,7 @@ class ListaTransacoesAdapter(private val transacoes: List<Transacao>,
 
     private val limiteDaCategoria = 14
 
+    @SuppressLint("ViewHolder")
     override fun getView(posicao: Int, view: View?, parent: ViewGroup?): View {
         val viewCriada: View = LayoutInflater.from(context)
                 .inflate(R.layout.transacao_item, parent, false)
