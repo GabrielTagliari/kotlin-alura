@@ -8,5 +8,6 @@ class TransacaoDespesa(valor: BigDecimal,
                        categoria: String = "Indefinida",
                        data: Calendar = Calendar.getInstance(),
                        cor: Int = R.color.despesa,
-                       icone: Int = R.drawable.icone_transacao_item_despesa)
-    : Transacao(valor, categoria, data, cor, icone)
+                       icone: Int = R.drawable.icone_transacao_item_despesa,
+                       tipo: TipoTransacao = TipoTransacao.DESPESA)
+    : Transacao(valor, categoria, data, cor, icone, tipo)

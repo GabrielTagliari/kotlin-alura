@@ -12,24 +12,35 @@ import br.com.alura.financask.delegate.TransacaoDelegate
 import br.com.alura.financask.extension.converteParaCalendar
 import br.com.alura.financask.extension.formataParaBrasileiro
 import br.com.alura.financask.model.TipoTransacao
+import br.com.alura.financask.model.Transacao
 import br.com.alura.financask.model.TransacaoDespesa
 import br.com.alura.financask.model.TransacaoReceita
 import kotlinx.android.synthetic.main.form_transacao.view.*
 import java.math.BigDecimal
 import java.util.*
 
-class AdicionaTransacaoDialog(private val viewGroup: ViewGroup,
-                              private val context: Context) {
+class AlteraTransacaoDialog(private val viewGroup: ViewGroup,
+                            private val context: Context) {
 
     private val viewCriada = criaLayout()
     private val valor = viewCriada.form_transacao_valor
     private val data = viewCriada.form_transacao_data
     private val categoria = viewCriada.form_transacao_categoria
 
-    fun chama(tipoTransacao: TipoTransacao, transacaoDelegate: TransacaoDelegate) {
+    fun chama(transacao: Transacao, transacaoDelegate: TransacaoDelegate) {
+        val tipoTransacao = transacao.tipo
+
         configuraCampoData()
         configuraCampoCategoria(tipoTransacao)
         configuraFormulario(tipoTransacao, transacaoDelegate)
+
+        valor.setText(transacao.valor.toString())
+        data.setText(transacao.data.formataParaBrasileiro())
+
+        val categoriasRetornadas = context.resources.getStringArray(categoriaPor(tipoTransacao))
+        val posicaoCategoria = categoriasRetornadas.indexOf(transacao.categoria)
+
+        categoria.setSelection(posicaoCategoria, true)
     }
 
     private fun criaLayout(): View {
@@ -43,7 +54,7 @@ class AdicionaTransacaoDialog(private val viewGroup: ViewGroup,
         AlertDialog.Builder(context)
                 .setTitle(titulo)
                 .setView(viewCriada)
-                .setPositiveButton("Adicionar",
+                .setPositiveButton("Alterar",
                         { _, _ ->
                             val valorTexto = valor.text.toString()
                             val dataTexto = data.text.toString()
@@ -65,9 +76,9 @@ class AdicionaTransacaoDialog(private val viewGroup: ViewGroup,
 
     private fun tituloPor(tipoTransacao: TipoTransacao): Int {
         if (tipoTransacao == TipoTransacao.RECEITA) {
-            return R.string.altera_receita
+            return R.string.adiciona_receita
         }
-        return R.string.altera_despesa
+        return R.string.adiciona_despesa
     }
 
     private fun categoriaPor(tipoTransacao: TipoTransacao): Int {

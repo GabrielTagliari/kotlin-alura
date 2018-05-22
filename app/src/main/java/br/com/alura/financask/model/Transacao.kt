@@ -7,4 +7,5 @@ abstract class Transacao(val valor: BigDecimal,
                          val categoria: String,
                          val data: Calendar,
                          val cor: Int,
-                         val icone: Int)
+                         val icone: Int,
+                         val tipo: TipoTransacao)
